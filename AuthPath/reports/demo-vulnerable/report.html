@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>AuthPath report: demo-vulnerable</title>
+<style>
+body { font-family: -apple-system, Segoe UI, Arial, sans-serif; max-width: 960px;
+       margin: 2rem auto; padding: 0 1rem; color: #1a1a1a; background: #fff; }
+h1 { margin-bottom: 0.2rem; }
+.meta { color: #555; font-size: 0.9rem; margin-bottom: 1.5rem; }
+table { border-collapse: collapse; width: 100%; margin: 1rem 0; font-size: 0.9rem; }
+th, td { border: 1px solid #ddd; padding: 6px 10px; text-align: left; }
+th { background: #f3f4f6; }
+.badge { display: inline-block; padding: 2px 8px; border-radius: 10px;
+         color: #fff; font-size: 0.8rem; font-weight: 600; }
+.card { border: 1px solid #ddd; border-radius: 8px; padding: 1rem;
+        margin: 1rem 0; background: #fafafa; }
+pre { background: #111; color: #e5e5e5; padding: 0.75rem; border-radius: 6px;
+      overflow-x: auto; font-size: 0.85rem; }
+.summary-grid { display: flex; gap: 1rem; flex-wrap: wrap; margin: 1rem 0; }
+.stat { border: 1px solid #ddd; border-radius: 8px; padding: 0.75rem 1.25rem;
+        text-align: center; min-width: 100px; }
+.stat .n { font-size: 1.6rem; font-weight: 700; display: block; }
+.remediation { background: #ecfdf5; border-left: 3px solid #15803d;
+               padding: 0.5rem 0.75rem; margin: 0.5rem 0; border-radius: 4px; }
+</style>
+</head>
+<body>
+  <h1>AuthPath report: demo-vulnerable</h1>
+  <p class="meta">
+    Scenario: AuthPath Lab API - banking scenario &nbsp;|&nbsp;
+    Target: http://127.0.0.1:8001 &nbsp;|&nbsp;
+    2026-10-06T16:22:37+00:00 &rarr; 2026-10-06T16:22:37+00:00 &nbsp;|&nbsp;
+    AuthPath 0.1.0
+  </p>
+  <div class="summary-grid"><div class="stat"><span class="n">28</span>Total</div><div class="stat"><span class="n">16</span>Pass</div><div class="stat"><span class="n">12</span>Violation</div><div class="stat"><span class="n">0</span>Over-restriction</div><div class="stat"><span class="n">0</span>Inconclusive</div><div class="stat"><span class="n">8</span>Data exposure</div></div>
+  <h2>Violations</h2>
+    <div class="card">
+      <h3>TC-002: user_001
+          read
+          account/account_002
+          <span class="badge" style="background:#b91c1c">VIOLATION</span> <span class="badge" style="background:#b91c1c">High</span></h3>
+      <p><b>Category:</b> API1:2023 Broken Object Level Authorization</p>
+      <p><b>Expected:</b> deny (No policy grants this access (default deny).)</p>
+      <p><b>Observed:</b> allow (HTTP 200: request succeeded.)</p>
+      <p><b>HTTP status:</b> 200</p>
+      <p><b>Exposed fields:</b> internal_risk_score</p>
+      <p><b>Response body SHA-256:</b> <code>46974b1f55ae8218f01e0b4938a2512518c1bbb05b57ea032ba57a4feb479d22</code></p>
+      <p class="remediation"><b>Remediation:</b> Add an ownership (or relationship) check before returning this resource - verify the resource belongs to the authenticated subject (or that they otherwise have a legitimate relationship to it), not just that they are logged in. Enforce this server-side, on every request - never trust an ID supplied by the client alone.</p><p class="remediation"><b>Remediation:</b> Strip `internal_risk_score` from the response for subjects who are not entitled to it - build the response per-role/per-relationship (an explicit allow-list of fields, or a serializer per role) rather than returning the full stored record as-is.</p>
+      <pre>curl -i -X GET -H &#x27;X-User-ID: user_001&#x27; &#x27;http://127.0.0.1:8001/api/accounts/account_002&#x27;</pre>
+    </div>
+    <div class="card">
+      <h3>TC-003: user_002
+          read
+          account/account_001
+          <span class="badge" style="background:#b91c1c">VIOLATION</span> <span class="badge" style="background:#b91c1c">High</span></h3>
+      <p><b>Category:</b> API1:2023 Broken Object Level Authorization</p>
+      <p><b>Expected:</b> deny (No policy grants this access (default deny).)</p>
+      <p><b>Observed:</b> allow (HTTP 200: request succeeded.)</p>
+      <p><b>HTTP status:</b> 200</p>
+      <p><b>Exposed fields:</b> internal_risk_score</p>
+      <p><b>Response body SHA-256:</b> <code>8ebdf2866fcd9bc1ea1abe8e56a2d9a5110a9b984a32c0c1e491737c1ec924bc</code></p>
+      <p class="remediation"><b>Remediation:</b> Add an ownership (or relationship) check before returning this resource - verify the resource belongs to the authenticated subject (or that they otherwise have a legitimate relationship to it), not just that they are logged in. Enforce this server-side, on every request - never trust an ID supplied by the client alone.</p><p class="remediation"><b>Remediation:</b> Strip `internal_risk_score` from the response for subjects who are not entitled to it - build the response per-role/per-relationship (an explicit allow-list of fields, or a serializer per role) rather than returning the full stored record as-is.</p>
+      <pre>curl -i -X GET -H &#x27;X-User-ID: user_002&#x27; &#x27;http://127.0.0.1:8001/api/accounts/account_001&#x27;</pre>
+    </div>
+    <div class="card">
+      <h3>TC-010: user_001
+          update
+          account/account_002
+          <span class="badge" style="background:#b91c1c">VIOLATION</span> <span class="badge" style="background:#b91c1c">High</span></h3>
+      <p><b>Category:</b> API1:2023 Broken Object Level Authorization</p>
+      <p><b>Expected:</b> deny (No policy grants this access (default deny).)</p>
+      <p><b>Observed:</b> allow (HTTP 200: request succeeded.)</p>
+      <p><b>HTTP status:</b> 200</p>
+      <p><b>Exposed fields:</b> internal_risk_score</p>
+      <p><b>Response body SHA-256:</b> <code>5ca160913628733a377db757ba6629a41217bfb56d5ed2a34c216f4ce1e31d59</code></p>
+      <p class="remediation"><b>Remediation:</b> Add an ownership (or relationship) check before returning this resource - verify the resource belongs to the authenticated subject (or that they otherwise have a legitimate relationship to it), not just that they are logged in. Enforce this server-side, on every request - never trust an ID supplied by the client alone.</p><p class="remediation"><b>Remediation:</b> Strip `internal_risk_score` from the response for subjects who are not entitled to it - build the response per-role/per-relationship (an explicit allow-list of fields, or a serializer per role) rather than returning the full stored record as-is.</p>
+      <pre>curl -i -X PUT -H &#x27;X-User-ID: user_001&#x27; -H &#x27;Content-Type: application/json&#x27; -d &#x27;{&quot;nickname&quot;: &quot;authpath-probe&quot;}&#x27; &#x27;http://127.0.0.1:8001/api/accounts/account_002&#x27;</pre>
+    </div>
+    <div class="card">
+      <h3>TC-011: user_002
+          update
+          account/account_001
+          <span class="badge" style="background:#b91c1c">VIOLATION</span> <span class="badge" style="background:#b91c1c">High</span></h3>
+      <p><b>Category:</b> API1:2023 Broken Object Level Authorization</p>
+      <p><b>Expected:</b> deny (No policy grants this access (default deny).)</p>
+      <p><b>Observed:</b> allow (HTTP 200: request succeeded.)</p>
+      <p><b>HTTP status:</b> 200</p>
+      <p><b>Exposed fields:</b> internal_risk_score</p>
+      <p><b>Response body SHA-256:</b> <code>584a9c73c9d8f06640c596de376af5d1377ce71f866d3ca661da783373dd5b5b</code></p>
+      <p class="remediation"><b>Remediation:</b> Add an ownership (or relationship) check before returning this resource - verify the resource belongs to the authenticated subject (or that they otherwise have a legitimate relationship to it), not just that they are logged in. Enforce this server-side, on every request - never trust an ID supplied by the client alone.</p><p class="remediation"><b>Remediation:</b> Strip `internal_risk_score` from the response for subjects who are not entitled to it - build the response per-role/per-relationship (an explicit allow-list of fields, or a serializer per role) rather than returning the full stored record as-is.</p>
+      <pre>curl -i -X PUT -H &#x27;X-User-ID: user_002&#x27; -H &#x27;Content-Type: application/json&#x27; -d &#x27;{&quot;nickname&quot;: &quot;authpath-probe&quot;}&#x27; &#x27;http://127.0.0.1:8001/api/accounts/account_001&#x27;</pre>
+    </div>
+    <div class="card">
+      <h3>TC-013: admin_001
+          update
+          account/account_001
+          <span class="badge" style="background:#b91c1c">VIOLATION</span> <span class="badge" style="background:#b91c1c">High</span></h3>
+      <p><b>Category:</b> API1:2023 Broken Object Level Authorization</p>
+      <p><b>Expected:</b> deny (No policy grants this access (default deny).)</p>
+      <p><b>Observed:</b> allow (HTTP 200: request succeeded.)</p>
+      <p><b>HTTP status:</b> 200</p>
+      
+      <p><b>Response body SHA-256:</b> <code>584a9c73c9d8f06640c596de376af5d1377ce71f866d3ca661da783373dd5b5b</code></p>
+      <p class="remediation"><b>Remediation:</b> Add an ownership (or relationship) check before returning this resource - verify the resource belongs to the authenticated subject (or that they otherwise have a legitimate relationship to it), not just that they are logged in. Enforce this server-side, on every request - never trust an ID supplied by the client alone.</p>
+      <pre>curl -i -X PUT -H &#x27;X-User-ID: admin_001&#x27; -H &#x27;Content-Type: application/json&#x27; -d &#x27;{&quot;nickname&quot;: &quot;authpath-probe&quot;}&#x27; &#x27;http://127.0.0.1:8001/api/accounts/account_001&#x27;</pre>
+    </div>
+    <div class="card">
+      <h3>TC-014: admin_001
+          update
+          account/account_002
+          <span class="badge" style="background:#b91c1c">VIOLATION</span> <span class="badge" style="background:#b91c1c">High</span></h3>
+      <p><b>Category:</b> API1:2023 Broken Object Level Authorization</p>
+      <p><b>Expected:</b> deny (No policy grants this access (default deny).)</p>
+      <p><b>Observed:</b> allow (HTTP 200: request succeeded.)</p>
+      <p><b>HTTP status:</b> 200</p>
+      
+      <p><b>Response body SHA-256:</b> <code>5ca160913628733a377db757ba6629a41217bfb56d5ed2a34c216f4ce1e31d59</code></p>
+      <p class="remediation"><b>Remediation:</b> Add an ownership (or relationship) check before returning this resource - verify the resource belongs to the authenticated subject (or that they otherwise have a legitimate relationship to it), not just that they are logged in. Enforce this server-side, on every request - never trust an ID supplied by the client alone.</p>
+      <pre>curl -i -X PUT -H &#x27;X-User-ID: admin_001&#x27; -H &#x27;Content-Type: application/json&#x27; -d &#x27;{&quot;nickname&quot;: &quot;authpath-probe&quot;}&#x27; &#x27;http://127.0.0.1:8001/api/accounts/account_002&#x27;</pre>
+    </div>
+    <div class="card">
+      <h3>TC-017: user_001
+          delete
+          account/account_001
+          <span class="badge" style="background:#b91c1c">VIOLATION</span> <span class="badge" style="background:#b91c1c">High</span></h3>
+      <p><b>Category:</b> API5:2023 Broken Function Level Authorization</p>
+      <p><b>Expected:</b> deny (No policy grants this access (default deny).)</p>
+      <p><b>Observed:</b> allow (HTTP 200: request succeeded.)</p>
+      <p><b>HTTP status:</b> 200</p>
+      
+      <p><b>Response body SHA-256:</b> <code>422dadd428342afacf6b8f5bead08af3d37d8db5fa420f5407d99d8a6a35ab87</code></p>
+      <p class="remediation"><b>Remediation:</b> Add a role/permission check on this endpoint - verify the subject holds the required role or permission before performing the action, not just that they are authenticated. Apply the check at the start of the handler (or via middleware/decorator), before any work is done.</p>
+      <pre>curl -i -X DELETE -H &#x27;X-User-ID: user_001&#x27; &#x27;http://127.0.0.1:8001/api/accounts/account_001&#x27;</pre>
+    </div>
+    <div class="card">
+      <h3>TC-018: user_001
+          delete
+          account/account_002
+          <span class="badge" style="background:#b91c1c">VIOLATION</span> <span class="badge" style="background:#b91c1c">High</span></h3>
+      <p><b>Category:</b> API5:2023 Broken Function Level Authorization</p>
+      <p><b>Expected:</b> deny (No policy grants this access (default deny).)</p>
+      <p><b>Observed:</b> allow (HTTP 200: request succeeded.)</p>
+      <p><b>HTTP status:</b> 200</p>
+      
+      <p><b>Response body SHA-256:</b> <code>aa14dd42e8e187c5594034c9a1dfe7fddde04e59340d068bc9675bfa27143087</code></p>
+      <p class="remediation"><b>Remediation:</b> Add a role/permission check on this endpoint - verify the subject holds the required role or permission before performing the action, not just that they are authenticated. Apply the check at the start of the handler (or via middleware/decorator), before any work is done.</p>
+      <pre>curl -i -X DELETE -H &#x27;X-User-ID: user_001&#x27; &#x27;http://127.0.0.1:8001/api/accounts/account_002&#x27;</pre>
+    </div>
+    <div class="card">
+      <h3>TC-019: user_002
+          delete
+          account/account_001
+          <span class="badge" style="background:#b91c1c">VIOLATION</span> <span class="badge" style="background:#b91c1c">High</span></h3>
+      <p><b>Category:</b> API5:2023 Broken Function Level Authorization</p>
+      <p><b>Expected:</b> deny (No policy grants this access (default deny).)</p>
+      <p><b>Observed:</b> allow (HTTP 200: request succeeded.)</p>
+      <p><b>HTTP status:</b> 200</p>
+      
+      <p><b>Response body SHA-256:</b> <code>422dadd428342afacf6b8f5bead08af3d37d8db5fa420f5407d99d8a6a35ab87</code></p>
+      <p class="remediation"><b>Remediation:</b> Add a role/permission check on this endpoint - verify the subject holds the required role or permission before performing the action, not just that they are authenticated. Apply the check at the start of the handler (or via middleware/decorator), before any work is done.</p>
+      <pre>curl -i -X DELETE -H &#x27;X-User-ID: user_002&#x27; &#x27;http://127.0.0.1:8001/api/accounts/account_001&#x27;</pre>
+    </div>
+    <div class="card">
+      <h3>TC-020: user_002
+          delete
+          account/account_002
+          <span class="badge" style="background:#b91c1c">VIOLATION</span> <span class="badge" style="background:#b91c1c">High</span></h3>
+      <p><b>Category:</b> API5:2023 Broken Function Level Authorization</p>
+      <p><b>Expected:</b> deny (No policy grants this access (default deny).)</p>
+      <p><b>Observed:</b> allow (HTTP 200: request succeeded.)</p>
+      <p><b>HTTP status:</b> 200</p>
+      
+      <p><b>Response body SHA-256:</b> <code>aa14dd42e8e187c5594034c9a1dfe7fddde04e59340d068bc9675bfa27143087</code></p>
+      <p class="remediation"><b>Remediation:</b> Add a role/permission check on this endpoint - verify the subject holds the required role or permission before performing the action, not just that they are authenticated. Apply the check at the start of the handler (or via middleware/decorator), before any work is done.</p>
+      <pre>curl -i -X DELETE -H &#x27;X-User-ID: user_002&#x27; &#x27;http://127.0.0.1:8001/api/accounts/account_002&#x27;</pre>
+    </div>
+    <div class="card">
+      <h3>TC-025: user_001
+          list_users
+          user_directory/all
+          <span class="badge" style="background:#b91c1c">VIOLATION</span> <span class="badge" style="background:#b91c1c">High</span></h3>
+      <p><b>Category:</b> API5:2023 Broken Function Level Authorization</p>
+      <p><b>Expected:</b> deny (No policy grants this access (default deny).)</p>
+      <p><b>Observed:</b> allow (HTTP 200: request succeeded.)</p>
+      <p><b>HTTP status:</b> 200</p>
+      
+      <p><b>Response body SHA-256:</b> <code>5822ad0c9ba03a8caf4435eae81dd1324a8a641522e30973aebdf3c34c97dc40</code></p>
+      <p class="remediation"><b>Remediation:</b> Add a role/permission check on this endpoint - verify the subject holds the required role or permission before performing the action, not just that they are authenticated. Apply the check at the start of the handler (or via middleware/decorator), before any work is done.</p>
+      <pre>curl -i -X GET -H &#x27;X-User-ID: user_001&#x27; &#x27;http://127.0.0.1:8001/api/admin/users&#x27;</pre>
+    </div>
+    <div class="card">
+      <h3>TC-026: user_002
+          list_users
+          user_directory/all
+          <span class="badge" style="background:#b91c1c">VIOLATION</span> <span class="badge" style="background:#b91c1c">High</span></h3>
+      <p><b>Category:</b> API5:2023 Broken Function Level Authorization</p>
+      <p><b>Expected:</b> deny (No policy grants this access (default deny).)</p>
+      <p><b>Observed:</b> allow (HTTP 200: request succeeded.)</p>
+      <p><b>HTTP status:</b> 200</p>
+      
+      <p><b>Response body SHA-256:</b> <code>5822ad0c9ba03a8caf4435eae81dd1324a8a641522e30973aebdf3c34c97dc40</code></p>
+      <p class="remediation"><b>Remediation:</b> Add a role/permission check on this endpoint - verify the subject holds the required role or permission before performing the action, not just that they are authenticated. Apply the check at the start of the handler (or via middleware/decorator), before any work is done.</p>
+      <pre>curl -i -X GET -H &#x27;X-User-ID: user_002&#x27; &#x27;http://127.0.0.1:8001/api/admin/users&#x27;</pre>
+    </div><h2>Excessive data exposure (OWASP API3)</h2>
+    <div class="card">
+      <h3>TC-001: user_001
+          read
+          account/account_001
+          <span class="badge" style="background:#15803d">PASS</span> <span class="badge" style="background:#b91c1c">High</span></h3>
+      <p><b>Category:</b> API3:2023 Broken Object Property Level Authorization</p>
+      <p><b>Expected:</b> allow (Allowed by read-own-account.)</p>
+      <p><b>Observed:</b> allow (HTTP 200: request succeeded.)</p>
+      <p><b>HTTP status:</b> 200</p>
+      <p><b>Exposed fields:</b> internal_risk_score</p>
+      <p><b>Response body SHA-256:</b> <code>8ebdf2866fcd9bc1ea1abe8e56a2d9a5110a9b984a32c0c1e491737c1ec924bc</code></p>
+      <p class="remediation"><b>Remediation:</b> Strip `internal_risk_score` from the response for subjects who are not entitled to it - build the response per-role/per-relationship (an explicit allow-list of fields, or a serializer per role) rather than returning the full stored record as-is.</p>
+      <pre>curl -i -X GET -H &#x27;X-User-ID: user_001&#x27; &#x27;http://127.0.0.1:8001/api/accounts/account_001&#x27;</pre>
+    </div>
+    <div class="card">
+      <h3>TC-002: user_001
+          read
+          account/account_002
+          <span class="badge" style="background:#b91c1c">VIOLATION</span> <span class="badge" style="background:#b91c1c">High</span></h3>
+      <p><b>Category:</b> API1:2023 Broken Object Level Authorization</p>
+      <p><b>Expected:</b> deny (No policy grants this access (default deny).)</p>
+      <p><b>Observed:</b> allow (HTTP 200: request succeeded.)</p>
+      <p><b>HTTP status:</b> 200</p>
+      <p><b>Exposed fields:</b> internal_risk_score</p>
+      <p><b>Response body SHA-256:</b> <code>46974b1f55ae8218f01e0b4938a2512518c1bbb05b57ea032ba57a4feb479d22</code></p>
+      <p class="remediation"><b>Remediation:</b> Add an ownership (or relationship) check before returning this resource - verify the resource belongs to the authenticated subject (or that they otherwise have a legitimate relationship to it), not just that they are logged in. Enforce this server-side, on every request - never trust an ID supplied by the client alone.</p><p class="remediation"><b>Remediation:</b> Strip `internal_risk_score` from the response for subjects who are not entitled to it - build the response per-role/per-relationship (an explicit allow-list of fields, or a serializer per role) rather than returning the full stored record as-is.</p>
+      <pre>curl -i -X GET -H &#x27;X-User-ID: user_001&#x27; &#x27;http://127.0.0.1:8001/api/accounts/account_002&#x27;</pre>
+    </div>
+    <div class="card">
+      <h3>TC-003: user_002
+          read
+          account/account_001
+          <span class="badge" style="background:#b91c1c">VIOLATION</span> <span class="badge" style="background:#b91c1c">High</span></h3>
+      <p><b>Category:</b> API1:2023 Broken Object Level Authorization</p>
+      <p><b>Expected:</b> deny (No policy grants this access (default deny).)</p>
+      <p><b>Observed:</b> allow (HTTP 200: request succeeded.)</p>
+      <p><b>HTTP status:</b> 200</p>
+      <p><b>Exposed fields:</b> internal_risk_score</p>
+      <p><b>Response body SHA-256:</b> <code>8ebdf2866fcd9bc1ea1abe8e56a2d9a5110a9b984a32c0c1e491737c1ec924bc</code></p>
+      <p class="remediation"><b>Remediation:</b> Add an ownership (or relationship) check before returning this resource - verify the resource belongs to the authenticated subject (or that they otherwise have a legitimate relationship to it), not just that they are logged in. Enforce this server-side, on every request - never trust an ID supplied by the client alone.</p><p class="remediation"><b>Remediation:</b> Strip `internal_risk_score` from the response for subjects who are not entitled to it - build the response per-role/per-relationship (an explicit allow-list of fields, or a serializer per role) rather than returning the full stored record as-is.</p>
+      <pre>curl -i -X GET -H &#x27;X-User-ID: user_002&#x27; &#x27;http://127.0.0.1:8001/api/accounts/account_001&#x27;</pre>
+    </div>
+    <div class="card">
+      <h3>TC-004: user_002
+          read
+          account/account_002
+          <span class="badge" style="background:#15803d">PASS</span> <span class="badge" style="background:#b91c1c">High</span></h3>
+      <p><b>Category:</b> API3:2023 Broken Object Property Level Authorization</p>
+      <p><b>Expected:</b> allow (Allowed by read-own-account.)</p>
+      <p><b>Observed:</b> allow (HTTP 200: request succeeded.)</p>
+      <p><b>HTTP status:</b> 200</p>
+      <p><b>Exposed fields:</b> internal_risk_score</p>
+      <p><b>Response body SHA-256:</b> <code>46974b1f55ae8218f01e0b4938a2512518c1bbb05b57ea032ba57a4feb479d22</code></p>
+      <p class="remediation"><b>Remediation:</b> Strip `internal_risk_score` from the response for subjects who are not entitled to it - build the response per-role/per-relationship (an explicit allow-list of fields, or a serializer per role) rather than returning the full stored record as-is.</p>
+      <pre>curl -i -X GET -H &#x27;X-User-ID: user_002&#x27; &#x27;http://127.0.0.1:8001/api/accounts/account_002&#x27;</pre>
+    </div>
+    <div class="card">
+      <h3>TC-009: user_001
+          update
+          account/account_001
+          <span class="badge" style="background:#15803d">PASS</span> <span class="badge" style="background:#b91c1c">High</span></h3>
+      <p><b>Category:</b> API3:2023 Broken Object Property Level Authorization</p>
+      <p><b>Expected:</b> allow (Allowed by update-own-account.)</p>
+      <p><b>Observed:</b> allow (HTTP 200: request succeeded.)</p>
+      <p><b>HTTP status:</b> 200</p>
+      <p><b>Exposed fields:</b> internal_risk_score</p>
+      <p><b>Response body SHA-256:</b> <code>584a9c73c9d8f06640c596de376af5d1377ce71f866d3ca661da783373dd5b5b</code></p>
+      <p class="remediation"><b>Remediation:</b> Strip `internal_risk_score` from the response for subjects who are not entitled to it - build the response per-role/per-relationship (an explicit allow-list of fields, or a serializer per role) rather than returning the full stored record as-is.</p>
+      <pre>curl -i -X PUT -H &#x27;X-User-ID: user_001&#x27; -H &#x27;Content-Type: application/json&#x27; -d &#x27;{&quot;nickname&quot;: &quot;authpath-probe&quot;}&#x27; &#x27;http://127.0.0.1:8001/api/accounts/account_001&#x27;</pre>
+    </div>
+    <div class="card">
+      <h3>TC-010: user_001
+          update
+          account/account_002
+          <span class="badge" style="background:#b91c1c">VIOLATION</span> <span class="badge" style="background:#b91c1c">High</span></h3>
+      <p><b>Category:</b> API1:2023 Broken Object Level Authorization</p>
+      <p><b>Expected:</b> deny (No policy grants this access (default deny).)</p>
+      <p><b>Observed:</b> allow (HTTP 200: request succeeded.)</p>
+      <p><b>HTTP status:</b> 200</p>
+      <p><b>Exposed fields:</b> internal_risk_score</p>
+      <p><b>Response body SHA-256:</b> <code>5ca160913628733a377db757ba6629a41217bfb56d5ed2a34c216f4ce1e31d59</code></p>
+      <p class="remediation"><b>Remediation:</b> Add an ownership (or relationship) check before returning this resource - verify the resource belongs to the authenticated subject (or that they otherwise have a legitimate relationship to it), not just that they are logged in. Enforce this server-side, on every request - never trust an ID supplied by the client alone.</p><p class="remediation"><b>Remediation:</b> Strip `internal_risk_score` from the response for subjects who are not entitled to it - build the response per-role/per-relationship (an explicit allow-list of fields, or a serializer per role) rather than returning the full stored record as-is.</p>
+      <pre>curl -i -X PUT -H &#x27;X-User-ID: user_001&#x27; -H &#x27;Content-Type: application/json&#x27; -d &#x27;{&quot;nickname&quot;: &quot;authpath-probe&quot;}&#x27; &#x27;http://127.0.0.1:8001/api/accounts/account_002&#x27;</pre>
+    </div>
+    <div class="card">
+      <h3>TC-011: user_002
+          update
+          account/account_001
+          <span class="badge" style="background:#b91c1c">VIOLATION</span> <span class="badge" style="background:#b91c1c">High</span></h3>
+      <p><b>Category:</b> API1:2023 Broken Object Level Authorization</p>
+      <p><b>Expected:</b> deny (No policy grants this access (default deny).)</p>
+      <p><b>Observed:</b> allow (HTTP 200: request succeeded.)</p>
+      <p><b>HTTP status:</b> 200</p>
+      <p><b>Exposed fields:</b> internal_risk_score</p>
+      <p><b>Response body SHA-256:</b> <code>584a9c73c9d8f06640c596de376af5d1377ce71f866d3ca661da783373dd5b5b</code></p>
+      <p class="remediation"><b>Remediation:</b> Add an ownership (or relationship) check before returning this resource - verify the resource belongs to the authenticated subject (or that they otherwise have a legitimate relationship to it), not just that they are logged in. Enforce this server-side, on every request - never trust an ID supplied by the client alone.</p><p class="remediation"><b>Remediation:</b> Strip `internal_risk_score` from the response for subjects who are not entitled to it - build the response per-role/per-relationship (an explicit allow-list of fields, or a serializer per role) rather than returning the full stored record as-is.</p>
+      <pre>curl -i -X PUT -H &#x27;X-User-ID: user_002&#x27; -H &#x27;Content-Type: application/json&#x27; -d &#x27;{&quot;nickname&quot;: &quot;authpath-probe&quot;}&#x27; &#x27;http://127.0.0.1:8001/api/accounts/account_001&#x27;</pre>
+    </div>
+    <div class="card">
+      <h3>TC-012: user_002
+          update
+          account/account_002
+          <span class="badge" style="background:#15803d">PASS</span> <span class="badge" style="background:#b91c1c">High</span></h3>
+      <p><b>Category:</b> API3:2023 Broken Object Property Level Authorization</p>
+      <p><b>Expected:</b> allow (Allowed by update-own-account.)</p>
+      <p><b>Observed:</b> allow (HTTP 200: request succeeded.)</p>
+      <p><b>HTTP status:</b> 200</p>
+      <p><b>Exposed fields:</b> internal_risk_score</p>
+      <p><b>Response body SHA-256:</b> <code>5ca160913628733a377db757ba6629a41217bfb56d5ed2a34c216f4ce1e31d59</code></p>
+      <p class="remediation"><b>Remediation:</b> Strip `internal_risk_score` from the response for subjects who are not entitled to it - build the response per-role/per-relationship (an explicit allow-list of fields, or a serializer per role) rather than returning the full stored record as-is.</p>
+      <pre>curl -i -X PUT -H &#x27;X-User-ID: user_002&#x27; -H &#x27;Content-Type: application/json&#x27; -d &#x27;{&quot;nickname&quot;: &quot;authpath-probe&quot;}&#x27; &#x27;http://127.0.0.1:8001/api/accounts/account_002&#x27;</pre>
+    </div>
+  <h2>All results</h2>
+  <table>
+    <tr><th>Case</th><th>Subject</th><th>Action</th><th>Resource</th>
+        <th>Expected</th><th>Observed</th><th>HTTP</th><th>Verdict</th>
+        <th>Severity</th><th>Exposed fields</th></tr>
+    <tr><td>TC-001</td><td>user_001</td><td>read</td><td>account/account_001</td><td>allow</td><td>allow</td><td>200</td><td><span class="badge" style="background:#15803d">PASS</span></td><td><span class="badge" style="background:#b91c1c">High</span></td><td>internal_risk_score</td></tr><tr><td>TC-002</td><td>user_001</td><td>read</td><td>account/account_002</td><td>deny</td><td>allow</td><td>200</td><td><span class="badge" style="background:#b91c1c">VIOLATION</span></td><td><span class="badge" style="background:#b91c1c">High</span></td><td>internal_risk_score</td></tr><tr><td>TC-003</td><td>user_002</td><td>read</td><td>account/account_001</td><td>deny</td><td>allow</td><td>200</td><td><span class="badge" style="background:#b91c1c">VIOLATION</span></td><td><span class="badge" style="background:#b91c1c">High</span></td><td>internal_risk_score</td></tr><tr><td>TC-004</td><td>user_002</td><td>read</td><td>account/account_002</td><td>allow</td><td>allow</td><td>200</td><td><span class="badge" style="background:#15803d">PASS</span></td><td><span class="badge" style="background:#b91c1c">High</span></td><td>internal_risk_score</td></tr><tr><td>TC-005</td><td>admin_001</td><td>read</td><td>account/account_001</td><td>allow</td><td>allow</td><td>200</td><td><span class="badge" style="background:#15803d">PASS</span></td><td></td><td></td></tr><tr><td>TC-006</td><td>admin_001</td><td>read</td><td>account/account_002</td><td>allow</td><td>allow</td><td>200</td><td><span class="badge" style="background:#15803d">PASS</span></td><td></td><td></td></tr><tr><td>TC-007</td><td>anonymous</td><td>read</td><td>account/account_001</td><td>deny</td><td>deny</td><td>401</td><td><span class="badge" style="background:#15803d">PASS</span></td><td></td><td></td></tr><tr><td>TC-008</td><td>anonymous</td><td>read</td><td>account/account_002</td><td>deny</td><td>deny</td><td>401</td><td><span class="badge" style="background:#15803d">PASS</span></td><td></td><td></td></tr><tr><td>TC-009</td><td>user_001</td><td>update</td><td>account/account_001</td><td>allow</td><td>allow</td><td>200</td><td><span class="badge" style="background:#15803d">PASS</span></td><td><span class="badge" style="background:#b91c1c">High</span></td><td>internal_risk_score</td></tr><tr><td>TC-010</td><td>user_001</td><td>update</td><td>account/account_002</td><td>deny</td><td>allow</td><td>200</td><td><span class="badge" style="background:#b91c1c">VIOLATION</span></td><td><span class="badge" style="background:#b91c1c">High</span></td><td>internal_risk_score</td></tr><tr><td>TC-011</td><td>user_002</td><td>update</td><td>account/account_001</td><td>deny</td><td>allow</td><td>200</td><td><span class="badge" style="background:#b91c1c">VIOLATION</span></td><td><span class="badge" style="background:#b91c1c">High</span></td><td>internal_risk_score</td></tr><tr><td>TC-012</td><td>user_002</td><td>update</td><td>account/account_002</td><td>allow</td><td>allow</td><td>200</td><td><span class="badge" style="background:#15803d">PASS</span></td><td><span class="badge" style="background:#b91c1c">High</span></td><td>internal_risk_score</td></tr><tr><td>TC-013</td><td>admin_001</td><td>update</td><td>account/account_001</td><td>deny</td><td>allow</td><td>200</td><td><span class="badge" style="background:#b91c1c">VIOLATION</span></td><td><span class="badge" style="background:#b91c1c">High</span></td><td></td></tr><tr><td>TC-014</td><td>admin_001</td><td>update</td><td>account/account_002</td><td>deny</td><td>allow</td><td>200</td><td><span class="badge" style="background:#b91c1c">VIOLATION</span></td><td><span class="badge" style="background:#b91c1c">High</span></td><td></td></tr><tr><td>TC-015</td><td>anonymous</td><td>update</td><td>account/account_001</td><td>deny</td><td>deny</td><td>401</td><td><span class="badge" style="background:#15803d">PASS</span></td><td></td><td></td></tr><tr><td>TC-016</td><td>anonymous</td><td>update</td><td>account/account_002</td><td>deny</td><td>deny</td><td>401</td><td><span class="badge" style="background:#15803d">PASS</span></td><td></td><td></td></tr><tr><td>TC-017</td><td>user_001</td><td>delete</td><td>account/account_001</td><td>deny</td><td>allow</td><td>200</td><td><span class="badge" style="background:#b91c1c">VIOLATION</span></td><td><span class="badge" style="background:#b91c1c">High</span></td><td></td></tr><tr><td>TC-018</td><td>user_001</td><td>delete</td><td>account/account_002</td><td>deny</td><td>allow</td><td>200</td><td><span class="badge" style="background:#b91c1c">VIOLATION</span></td><td><span class="badge" style="background:#b91c1c">High</span></td><td></td></tr><tr><td>TC-019</td><td>user_002</td><td>delete</td><td>account/account_001</td><td>deny</td><td>allow</td><td>200</td><td><span class="badge" style="background:#b91c1c">VIOLATION</span></td><td><span class="badge" style="background:#b91c1c">High</span></td><td></td></tr><tr><td>TC-020</td><td>user_002</td><td>delete</td><td>account/account_002</td><td>deny</td><td>allow</td><td>200</td><td><span class="badge" style="background:#b91c1c">VIOLATION</span></td><td><span class="badge" style="background:#b91c1c">High</span></td><td></td></tr><tr><td>TC-021</td><td>admin_001</td><td>delete</td><td>account/account_001</td><td>allow</td><td>allow</td><td>200</td><td><span class="badge" style="background:#15803d">PASS</span></td><td></td><td></td></tr><tr><td>TC-022</td><td>admin_001</td><td>delete</td><td>account/account_002</td><td>allow</td><td>allow</td><td>200</td><td><span class="badge" style="background:#15803d">PASS</span></td><td></td><td></td></tr><tr><td>TC-023</td><td>anonymous</td><td>delete</td><td>account/account_001</td><td>deny</td><td>deny</td><td>401</td><td><span class="badge" style="background:#15803d">PASS</span></td><td></td><td></td></tr><tr><td>TC-024</td><td>anonymous</td><td>delete</td><td>account/account_002</td><td>deny</td><td>deny</td><td>401</td><td><span class="badge" style="background:#15803d">PASS</span></td><td></td><td></td></tr><tr><td>TC-025</td><td>user_001</td><td>list_users</td><td>user_directory/all</td><td>deny</td><td>allow</td><td>200</td><td><span class="badge" style="background:#b91c1c">VIOLATION</span></td><td><span class="badge" style="background:#b91c1c">High</span></td><td></td></tr><tr><td>TC-026</td><td>user_002</td><td>list_users</td><td>user_directory/all</td><td>deny</td><td>allow</td><td>200</td><td><span class="badge" style="background:#b91c1c">VIOLATION</span></td><td><span class="badge" style="background:#b91c1c">High</span></td><td></td></tr><tr><td>TC-027</td><td>admin_001</td><td>list_users</td><td>user_directory/all</td><td>allow</td><td>allow</td><td>200</td><td><span class="badge" style="background:#15803d">PASS</span></td><td></td><td></td></tr><tr><td>TC-028</td><td>anonymous</td><td>list_users</td><td>user_directory/all</td><td>deny</td><td>deny</td><td>401</td><td><span class="badge" style="background:#15803d">PASS</span></td><td></td><td></td></tr>
+  </table>
+</body>
+</html>

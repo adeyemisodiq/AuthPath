@@ -1,0 +1,29 @@
+case_id,subject_id,action,resource_type,resource_id,expected,observed,verdict,severity,category,http_status,observation_reason,exposed_fields
+TC-001,user_001,read,account,account_001,allow,allow,PASS,High,API3:2023 Broken Object Property Level Authorization,200,HTTP 200: request succeeded.,internal_risk_score
+TC-002,user_001,read,account,account_002,deny,deny,PASS,,,403,HTTP 403: access refused.,
+TC-003,user_002,read,account,account_001,deny,deny,PASS,,,403,HTTP 403: access refused.,
+TC-004,user_002,read,account,account_002,allow,allow,PASS,High,API3:2023 Broken Object Property Level Authorization,200,HTTP 200: request succeeded.,internal_risk_score
+TC-005,admin_001,read,account,account_001,allow,allow,PASS,,,200,HTTP 200: request succeeded.,
+TC-006,admin_001,read,account,account_002,allow,allow,PASS,,,200,HTTP 200: request succeeded.,
+TC-007,anonymous,read,account,account_001,deny,deny,PASS,,,401,HTTP 401: access refused.,
+TC-008,anonymous,read,account,account_002,deny,deny,PASS,,,401,HTTP 401: access refused.,
+TC-009,user_001,update,account,account_001,allow,allow,PASS,High,API3:2023 Broken Object Property Level Authorization,200,HTTP 200: request succeeded.,internal_risk_score
+TC-010,user_001,update,account,account_002,deny,deny,PASS,,,403,HTTP 403: access refused.,
+TC-011,user_002,update,account,account_001,deny,deny,PASS,,,403,HTTP 403: access refused.,
+TC-012,user_002,update,account,account_002,allow,allow,PASS,High,API3:2023 Broken Object Property Level Authorization,200,HTTP 200: request succeeded.,internal_risk_score
+TC-013,admin_001,update,account,account_001,deny,deny,PASS,,,403,HTTP 403: access refused.,
+TC-014,admin_001,update,account,account_002,deny,deny,PASS,,,403,HTTP 403: access refused.,
+TC-015,anonymous,update,account,account_001,deny,deny,PASS,,,401,HTTP 401: access refused.,
+TC-016,anonymous,update,account,account_002,deny,deny,PASS,,,401,HTTP 401: access refused.,
+TC-017,user_001,delete,account,account_001,deny,deny,PASS,,,403,HTTP 403: access refused.,
+TC-018,user_001,delete,account,account_002,deny,deny,PASS,,,403,HTTP 403: access refused.,
+TC-019,user_002,delete,account,account_001,deny,deny,PASS,,,403,HTTP 403: access refused.,
+TC-020,user_002,delete,account,account_002,deny,deny,PASS,,,403,HTTP 403: access refused.,
+TC-021,admin_001,delete,account,account_001,allow,allow,PASS,,,200,HTTP 200: request succeeded.,
+TC-022,admin_001,delete,account,account_002,allow,allow,PASS,,,200,HTTP 200: request succeeded.,
+TC-023,anonymous,delete,account,account_001,deny,deny,PASS,,,401,HTTP 401: access refused.,
+TC-024,anonymous,delete,account,account_002,deny,deny,PASS,,,401,HTTP 401: access refused.,
+TC-025,user_001,list_users,user_directory,all,deny,deny,PASS,,,403,HTTP 403: access refused.,
+TC-026,user_002,list_users,user_directory,all,deny,deny,PASS,,,403,HTTP 403: access refused.,
+TC-027,admin_001,list_users,user_directory,all,allow,allow,PASS,,,200,HTTP 200: request succeeded.,
+TC-028,anonymous,list_users,user_directory,all,deny,deny,PASS,,,401,HTTP 401: access refused.,

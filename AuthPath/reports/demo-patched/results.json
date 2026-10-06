@@ -1,0 +1,1031 @@
+{
+  "tool": "AuthPath",
+  "version": "0.1.0",
+  "run": {
+    "label": "demo-patched",
+    "scenario": "AuthPath Lab API - banking scenario",
+    "base_url": "http://127.0.0.1:8002",
+    "started_at": "2026-10-06T16:23:52+00:00",
+    "finished_at": "2026-10-06T16:23:52+00:00"
+  },
+  "summary": {
+    "total": 28,
+    "pass": 28,
+    "violation": 0,
+    "over_restriction": 0,
+    "inconclusive": 0,
+    "data_exposure": 4
+  },
+  "results": [
+    {
+      "case_id": "TC-001",
+      "binding_id": "get_account",
+      "authorization_level": "object",
+      "subject_id": "user_001",
+      "action": "read",
+      "resource_type": "account",
+      "resource_id": "account_001",
+      "expected": "allow",
+      "observed": "allow",
+      "verdict": "PASS",
+      "category": "API3:2023 Broken Object Property Level Authorization",
+      "severity": "High",
+      "exposed_fields": [
+        "internal_risk_score"
+      ],
+      "remediation": [
+        "Strip `internal_risk_score` from the response for subjects who are not entitled to it - build the response per-role/per-relationship (an explicit allow-list of fields, or a serializer per role) rather than returning the full stored record as-is."
+      ],
+      "policy_ids": [
+        "read-own-account"
+      ],
+      "rationale": "Allowed by read-own-account.",
+      "observation_reason": "HTTP 200: request succeeded.",
+      "timestamp": "2026-10-06T16:23:52+00:00",
+      "request": {
+        "method": "GET",
+        "url": "http://127.0.0.1:8002/api/accounts/account_001",
+        "headers": {
+          "X-User-ID": "user_001"
+        },
+        "body": null
+      },
+      "response": {
+        "status": 200,
+        "elapsed_ms": 9.86,
+        "error": null,
+        "body_excerpt": "{\"account\": {\"id\": \"account_001\", \"owner\": \"user_001\", \"balance\": 50000, \"nickname\": \"Main\", \"internal_risk_score\": 17}}",
+        "body_sha256": "8ebdf2866fcd9bc1ea1abe8e56a2d9a5110a9b984a32c0c1e491737c1ec924bc"
+      }
+    },
+    {
+      "case_id": "TC-002",
+      "binding_id": "get_account",
+      "authorization_level": "object",
+      "subject_id": "user_001",
+      "action": "read",
+      "resource_type": "account",
+      "resource_id": "account_002",
+      "expected": "deny",
+      "observed": "deny",
+      "verdict": "PASS",
+      "category": null,
+      "severity": null,
+      "exposed_fields": [],
+      "remediation": [],
+      "policy_ids": [],
+      "rationale": "No policy grants this access (default deny).",
+      "observation_reason": "HTTP 403: access refused.",
+      "timestamp": "2026-10-06T16:23:52+00:00",
+      "request": {
+        "method": "GET",
+        "url": "http://127.0.0.1:8002/api/accounts/account_002",
+        "headers": {
+          "X-User-ID": "user_001"
+        },
+        "body": null
+      },
+      "response": {
+        "status": 403,
+        "elapsed_ms": 3.11,
+        "error": null,
+        "body_excerpt": "{\"error\": \"Forbidden\"}",
+        "body_sha256": "ff57a7441cf05c0ae2a6a631bcc9f068a205a3fba4a5d451309099a208db2962"
+      }
+    },
+    {
+      "case_id": "TC-003",
+      "binding_id": "get_account",
+      "authorization_level": "object",
+      "subject_id": "user_002",
+      "action": "read",
+      "resource_type": "account",
+      "resource_id": "account_001",
+      "expected": "deny",
+      "observed": "deny",
+      "verdict": "PASS",
+      "category": null,
+      "severity": null,
+      "exposed_fields": [],
+      "remediation": [],
+      "policy_ids": [],
+      "rationale": "No policy grants this access (default deny).",
+      "observation_reason": "HTTP 403: access refused.",
+      "timestamp": "2026-10-06T16:23:52+00:00",
+      "request": {
+        "method": "GET",
+        "url": "http://127.0.0.1:8002/api/accounts/account_001",
+        "headers": {
+          "X-User-ID": "user_002"
+        },
+        "body": null
+      },
+      "response": {
+        "status": 403,
+        "elapsed_ms": 2.67,
+        "error": null,
+        "body_excerpt": "{\"error\": \"Forbidden\"}",
+        "body_sha256": "ff57a7441cf05c0ae2a6a631bcc9f068a205a3fba4a5d451309099a208db2962"
+      }
+    },
+    {
+      "case_id": "TC-004",
+      "binding_id": "get_account",
+      "authorization_level": "object",
+      "subject_id": "user_002",
+      "action": "read",
+      "resource_type": "account",
+      "resource_id": "account_002",
+      "expected": "allow",
+      "observed": "allow",
+      "verdict": "PASS",
+      "category": "API3:2023 Broken Object Property Level Authorization",
+      "severity": "High",
+      "exposed_fields": [
+        "internal_risk_score"
+      ],
+      "remediation": [
+        "Strip `internal_risk_score` from the response for subjects who are not entitled to it - build the response per-role/per-relationship (an explicit allow-list of fields, or a serializer per role) rather than returning the full stored record as-is."
+      ],
+      "policy_ids": [
+        "read-own-account"
+      ],
+      "rationale": "Allowed by read-own-account.",
+      "observation_reason": "HTTP 200: request succeeded.",
+      "timestamp": "2026-10-06T16:23:52+00:00",
+      "request": {
+        "method": "GET",
+        "url": "http://127.0.0.1:8002/api/accounts/account_002",
+        "headers": {
+          "X-User-ID": "user_002"
+        },
+        "body": null
+      },
+      "response": {
+        "status": 200,
+        "elapsed_ms": 4.53,
+        "error": null,
+        "body_excerpt": "{\"account\": {\"id\": \"account_002\", \"owner\": \"user_002\", \"balance\": 75000, \"nickname\": \"Savings\", \"internal_risk_score\": 63}}",
+        "body_sha256": "46974b1f55ae8218f01e0b4938a2512518c1bbb05b57ea032ba57a4feb479d22"
+      }
+    },
+    {
+      "case_id": "TC-005",
+      "binding_id": "get_account",
+      "authorization_level": "object",
+      "subject_id": "admin_001",
+      "action": "read",
+      "resource_type": "account",
+      "resource_id": "account_001",
+      "expected": "allow",
+      "observed": "allow",
+      "verdict": "PASS",
+      "category": null,
+      "severity": null,
+      "exposed_fields": [],
+      "remediation": [],
+      "policy_ids": [
+        "admin-read-any-account"
+      ],
+      "rationale": "Allowed by admin-read-any-account.",
+      "observation_reason": "HTTP 200: request succeeded.",
+      "timestamp": "2026-10-06T16:23:52+00:00",
+      "request": {
+        "method": "GET",
+        "url": "http://127.0.0.1:8002/api/accounts/account_001",
+        "headers": {
+          "X-User-ID": "admin_001"
+        },
+        "body": null
+      },
+      "response": {
+        "status": 200,
+        "elapsed_ms": 2.96,
+        "error": null,
+        "body_excerpt": "{\"account\": {\"id\": \"account_001\", \"owner\": \"user_001\", \"balance\": 50000, \"nickname\": \"Main\", \"internal_risk_score\": 17}}",
+        "body_sha256": "8ebdf2866fcd9bc1ea1abe8e56a2d9a5110a9b984a32c0c1e491737c1ec924bc"
+      }
+    },
+    {
+      "case_id": "TC-006",
+      "binding_id": "get_account",
+      "authorization_level": "object",
+      "subject_id": "admin_001",
+      "action": "read",
+      "resource_type": "account",
+      "resource_id": "account_002",
+      "expected": "allow",
+      "observed": "allow",
+      "verdict": "PASS",
+      "category": null,
+      "severity": null,
+      "exposed_fields": [],
+      "remediation": [],
+      "policy_ids": [
+        "admin-read-any-account"
+      ],
+      "rationale": "Allowed by admin-read-any-account.",
+      "observation_reason": "HTTP 200: request succeeded.",
+      "timestamp": "2026-10-06T16:23:52+00:00",
+      "request": {
+        "method": "GET",
+        "url": "http://127.0.0.1:8002/api/accounts/account_002",
+        "headers": {
+          "X-User-ID": "admin_001"
+        },
+        "body": null
+      },
+      "response": {
+        "status": 200,
+        "elapsed_ms": 2.98,
+        "error": null,
+        "body_excerpt": "{\"account\": {\"id\": \"account_002\", \"owner\": \"user_002\", \"balance\": 75000, \"nickname\": \"Savings\", \"internal_risk_score\": 63}}",
+        "body_sha256": "46974b1f55ae8218f01e0b4938a2512518c1bbb05b57ea032ba57a4feb479d22"
+      }
+    },
+    {
+      "case_id": "TC-007",
+      "binding_id": "get_account",
+      "authorization_level": "object",
+      "subject_id": "anonymous",
+      "action": "read",
+      "resource_type": "account",
+      "resource_id": "account_001",
+      "expected": "deny",
+      "observed": "deny",
+      "verdict": "PASS",
+      "category": null,
+      "severity": null,
+      "exposed_fields": [],
+      "remediation": [],
+      "policy_ids": [],
+      "rationale": "No policy grants this access (default deny).",
+      "observation_reason": "HTTP 401: access refused.",
+      "timestamp": "2026-10-06T16:23:52+00:00",
+      "request": {
+        "method": "GET",
+        "url": "http://127.0.0.1:8002/api/accounts/account_001",
+        "headers": {},
+        "body": null
+      },
+      "response": {
+        "status": 401,
+        "elapsed_ms": 2.74,
+        "error": null,
+        "body_excerpt": "{\"error\": \"Authentication required\"}",
+        "body_sha256": "398d93874c3cffdf2e3bbfe6c09c7eeb17d2538c8c308bec017121fe5d664cb3"
+      }
+    },
+    {
+      "case_id": "TC-008",
+      "binding_id": "get_account",
+      "authorization_level": "object",
+      "subject_id": "anonymous",
+      "action": "read",
+      "resource_type": "account",
+      "resource_id": "account_002",
+      "expected": "deny",
+      "observed": "deny",
+      "verdict": "PASS",
+      "category": null,
+      "severity": null,
+      "exposed_fields": [],
+      "remediation": [],
+      "policy_ids": [],
+      "rationale": "No policy grants this access (default deny).",
+      "observation_reason": "HTTP 401: access refused.",
+      "timestamp": "2026-10-06T16:23:52+00:00",
+      "request": {
+        "method": "GET",
+        "url": "http://127.0.0.1:8002/api/accounts/account_002",
+        "headers": {},
+        "body": null
+      },
+      "response": {
+        "status": 401,
+        "elapsed_ms": 5.49,
+        "error": null,
+        "body_excerpt": "{\"error\": \"Authentication required\"}",
+        "body_sha256": "398d93874c3cffdf2e3bbfe6c09c7eeb17d2538c8c308bec017121fe5d664cb3"
+      }
+    },
+    {
+      "case_id": "TC-009",
+      "binding_id": "update_account",
+      "authorization_level": "object",
+      "subject_id": "user_001",
+      "action": "update",
+      "resource_type": "account",
+      "resource_id": "account_001",
+      "expected": "allow",
+      "observed": "allow",
+      "verdict": "PASS",
+      "category": "API3:2023 Broken Object Property Level Authorization",
+      "severity": "High",
+      "exposed_fields": [
+        "internal_risk_score"
+      ],
+      "remediation": [
+        "Strip `internal_risk_score` from the response for subjects who are not entitled to it - build the response per-role/per-relationship (an explicit allow-list of fields, or a serializer per role) rather than returning the full stored record as-is."
+      ],
+      "policy_ids": [
+        "update-own-account"
+      ],
+      "rationale": "Allowed by update-own-account.",
+      "observation_reason": "HTTP 200: request succeeded.",
+      "timestamp": "2026-10-06T16:23:52+00:00",
+      "request": {
+        "method": "PUT",
+        "url": "http://127.0.0.1:8002/api/accounts/account_001",
+        "headers": {
+          "X-User-ID": "user_001",
+          "Content-Type": "application/json"
+        },
+        "body": "{\"nickname\": \"authpath-probe\"}"
+      },
+      "response": {
+        "status": 200,
+        "elapsed_ms": 3.17,
+        "error": null,
+        "body_excerpt": "{\"account\": {\"id\": \"account_001\", \"owner\": \"user_001\", \"balance\": 50000, \"nickname\": \"authpath-probe\", \"internal_risk_score\": 17}}",
+        "body_sha256": "584a9c73c9d8f06640c596de376af5d1377ce71f866d3ca661da783373dd5b5b"
+      }
+    },
+    {
+      "case_id": "TC-010",
+      "binding_id": "update_account",
+      "authorization_level": "object",
+      "subject_id": "user_001",
+      "action": "update",
+      "resource_type": "account",
+      "resource_id": "account_002",
+      "expected": "deny",
+      "observed": "deny",
+      "verdict": "PASS",
+      "category": null,
+      "severity": null,
+      "exposed_fields": [],
+      "remediation": [],
+      "policy_ids": [],
+      "rationale": "No policy grants this access (default deny).",
+      "observation_reason": "HTTP 403: access refused.",
+      "timestamp": "2026-10-06T16:23:52+00:00",
+      "request": {
+        "method": "PUT",
+        "url": "http://127.0.0.1:8002/api/accounts/account_002",
+        "headers": {
+          "X-User-ID": "user_001",
+          "Content-Type": "application/json"
+        },
+        "body": "{\"nickname\": \"authpath-probe\"}"
+      },
+      "response": {
+        "status": 403,
+        "elapsed_ms": 2.56,
+        "error": null,
+        "body_excerpt": "{\"error\": \"Forbidden\"}",
+        "body_sha256": "ff57a7441cf05c0ae2a6a631bcc9f068a205a3fba4a5d451309099a208db2962"
+      }
+    },
+    {
+      "case_id": "TC-011",
+      "binding_id": "update_account",
+      "authorization_level": "object",
+      "subject_id": "user_002",
+      "action": "update",
+      "resource_type": "account",
+      "resource_id": "account_001",
+      "expected": "deny",
+      "observed": "deny",
+      "verdict": "PASS",
+      "category": null,
+      "severity": null,
+      "exposed_fields": [],
+      "remediation": [],
+      "policy_ids": [],
+      "rationale": "No policy grants this access (default deny).",
+      "observation_reason": "HTTP 403: access refused.",
+      "timestamp": "2026-10-06T16:23:52+00:00",
+      "request": {
+        "method": "PUT",
+        "url": "http://127.0.0.1:8002/api/accounts/account_001",
+        "headers": {
+          "X-User-ID": "user_002",
+          "Content-Type": "application/json"
+        },
+        "body": "{\"nickname\": \"authpath-probe\"}"
+      },
+      "response": {
+        "status": 403,
+        "elapsed_ms": 5.19,
+        "error": null,
+        "body_excerpt": "{\"error\": \"Forbidden\"}",
+        "body_sha256": "ff57a7441cf05c0ae2a6a631bcc9f068a205a3fba4a5d451309099a208db2962"
+      }
+    },
+    {
+      "case_id": "TC-012",
+      "binding_id": "update_account",
+      "authorization_level": "object",
+      "subject_id": "user_002",
+      "action": "update",
+      "resource_type": "account",
+      "resource_id": "account_002",
+      "expected": "allow",
+      "observed": "allow",
+      "verdict": "PASS",
+      "category": "API3:2023 Broken Object Property Level Authorization",
+      "severity": "High",
+      "exposed_fields": [
+        "internal_risk_score"
+      ],
+      "remediation": [
+        "Strip `internal_risk_score` from the response for subjects who are not entitled to it - build the response per-role/per-relationship (an explicit allow-list of fields, or a serializer per role) rather than returning the full stored record as-is."
+      ],
+      "policy_ids": [
+        "update-own-account"
+      ],
+      "rationale": "Allowed by update-own-account.",
+      "observation_reason": "HTTP 200: request succeeded.",
+      "timestamp": "2026-10-06T16:23:52+00:00",
+      "request": {
+        "method": "PUT",
+        "url": "http://127.0.0.1:8002/api/accounts/account_002",
+        "headers": {
+          "X-User-ID": "user_002",
+          "Content-Type": "application/json"
+        },
+        "body": "{\"nickname\": \"authpath-probe\"}"
+      },
+      "response": {
+        "status": 200,
+        "elapsed_ms": 2.81,
+        "error": null,
+        "body_excerpt": "{\"account\": {\"id\": \"account_002\", \"owner\": \"user_002\", \"balance\": 75000, \"nickname\": \"authpath-probe\", \"internal_risk_score\": 63}}",
+        "body_sha256": "5ca160913628733a377db757ba6629a41217bfb56d5ed2a34c216f4ce1e31d59"
+      }
+    },
+    {
+      "case_id": "TC-013",
+      "binding_id": "update_account",
+      "authorization_level": "object",
+      "subject_id": "admin_001",
+      "action": "update",
+      "resource_type": "account",
+      "resource_id": "account_001",
+      "expected": "deny",
+      "observed": "deny",
+      "verdict": "PASS",
+      "category": null,
+      "severity": null,
+      "exposed_fields": [],
+      "remediation": [],
+      "policy_ids": [],
+      "rationale": "No policy grants this access (default deny).",
+      "observation_reason": "HTTP 403: access refused.",
+      "timestamp": "2026-10-06T16:23:52+00:00",
+      "request": {
+        "method": "PUT",
+        "url": "http://127.0.0.1:8002/api/accounts/account_001",
+        "headers": {
+          "X-User-ID": "admin_001",
+          "Content-Type": "application/json"
+        },
+        "body": "{\"nickname\": \"authpath-probe\"}"
+      },
+      "response": {
+        "status": 403,
+        "elapsed_ms": 2.53,
+        "error": null,
+        "body_excerpt": "{\"error\": \"Forbidden\"}",
+        "body_sha256": "ff57a7441cf05c0ae2a6a631bcc9f068a205a3fba4a5d451309099a208db2962"
+      }
+    },
+    {
+      "case_id": "TC-014",
+      "binding_id": "update_account",
+      "authorization_level": "object",
+      "subject_id": "admin_001",
+      "action": "update",
+      "resource_type": "account",
+      "resource_id": "account_002",
+      "expected": "deny",
+      "observed": "deny",
+      "verdict": "PASS",
+      "category": null,
+      "severity": null,
+      "exposed_fields": [],
+      "remediation": [],
+      "policy_ids": [],
+      "rationale": "No policy grants this access (default deny).",
+      "observation_reason": "HTTP 403: access refused.",
+      "timestamp": "2026-10-06T16:23:52+00:00",
+      "request": {
+        "method": "PUT",
+        "url": "http://127.0.0.1:8002/api/accounts/account_002",
+        "headers": {
+          "X-User-ID": "admin_001",
+          "Content-Type": "application/json"
+        },
+        "body": "{\"nickname\": \"authpath-probe\"}"
+      },
+      "response": {
+        "status": 403,
+        "elapsed_ms": 3.52,
+        "error": null,
+        "body_excerpt": "{\"error\": \"Forbidden\"}",
+        "body_sha256": "ff57a7441cf05c0ae2a6a631bcc9f068a205a3fba4a5d451309099a208db2962"
+      }
+    },
+    {
+      "case_id": "TC-015",
+      "binding_id": "update_account",
+      "authorization_level": "object",
+      "subject_id": "anonymous",
+      "action": "update",
+      "resource_type": "account",
+      "resource_id": "account_001",
+      "expected": "deny",
+      "observed": "deny",
+      "verdict": "PASS",
+      "category": null,
+      "severity": null,
+      "exposed_fields": [],
+      "remediation": [],
+      "policy_ids": [],
+      "rationale": "No policy grants this access (default deny).",
+      "observation_reason": "HTTP 401: access refused.",
+      "timestamp": "2026-10-06T16:23:52+00:00",
+      "request": {
+        "method": "PUT",
+        "url": "http://127.0.0.1:8002/api/accounts/account_001",
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": "{\"nickname\": \"authpath-probe\"}"
+      },
+      "response": {
+        "status": 401,
+        "elapsed_ms": 2.62,
+        "error": null,
+        "body_excerpt": "{\"error\": \"Authentication required\"}",
+        "body_sha256": "398d93874c3cffdf2e3bbfe6c09c7eeb17d2538c8c308bec017121fe5d664cb3"
+      }
+    },
+    {
+      "case_id": "TC-016",
+      "binding_id": "update_account",
+      "authorization_level": "object",
+      "subject_id": "anonymous",
+      "action": "update",
+      "resource_type": "account",
+      "resource_id": "account_002",
+      "expected": "deny",
+      "observed": "deny",
+      "verdict": "PASS",
+      "category": null,
+      "severity": null,
+      "exposed_fields": [],
+      "remediation": [],
+      "policy_ids": [],
+      "rationale": "No policy grants this access (default deny).",
+      "observation_reason": "HTTP 401: access refused.",
+      "timestamp": "2026-10-06T16:23:52+00:00",
+      "request": {
+        "method": "PUT",
+        "url": "http://127.0.0.1:8002/api/accounts/account_002",
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": "{\"nickname\": \"authpath-probe\"}"
+      },
+      "response": {
+        "status": 401,
+        "elapsed_ms": 2.52,
+        "error": null,
+        "body_excerpt": "{\"error\": \"Authentication required\"}",
+        "body_sha256": "398d93874c3cffdf2e3bbfe6c09c7eeb17d2538c8c308bec017121fe5d664cb3"
+      }
+    },
+    {
+      "case_id": "TC-017",
+      "binding_id": "delete_account",
+      "authorization_level": "function",
+      "subject_id": "user_001",
+      "action": "delete",
+      "resource_type": "account",
+      "resource_id": "account_001",
+      "expected": "deny",
+      "observed": "deny",
+      "verdict": "PASS",
+      "category": null,
+      "severity": null,
+      "exposed_fields": [],
+      "remediation": [],
+      "policy_ids": [],
+      "rationale": "No policy grants this access (default deny).",
+      "observation_reason": "HTTP 403: access refused.",
+      "timestamp": "2026-10-06T16:23:52+00:00",
+      "request": {
+        "method": "DELETE",
+        "url": "http://127.0.0.1:8002/api/accounts/account_001",
+        "headers": {
+          "X-User-ID": "user_001"
+        },
+        "body": null
+      },
+      "response": {
+        "status": 403,
+        "elapsed_ms": 3.41,
+        "error": null,
+        "body_excerpt": "{\"error\": \"Forbidden\"}",
+        "body_sha256": "ff57a7441cf05c0ae2a6a631bcc9f068a205a3fba4a5d451309099a208db2962"
+      }
+    },
+    {
+      "case_id": "TC-018",
+      "binding_id": "delete_account",
+      "authorization_level": "function",
+      "subject_id": "user_001",
+      "action": "delete",
+      "resource_type": "account",
+      "resource_id": "account_002",
+      "expected": "deny",
+      "observed": "deny",
+      "verdict": "PASS",
+      "category": null,
+      "severity": null,
+      "exposed_fields": [],
+      "remediation": [],
+      "policy_ids": [],
+      "rationale": "No policy grants this access (default deny).",
+      "observation_reason": "HTTP 403: access refused.",
+      "timestamp": "2026-10-06T16:23:52+00:00",
+      "request": {
+        "method": "DELETE",
+        "url": "http://127.0.0.1:8002/api/accounts/account_002",
+        "headers": {
+          "X-User-ID": "user_001"
+        },
+        "body": null
+      },
+      "response": {
+        "status": 403,
+        "elapsed_ms": 3.0,
+        "error": null,
+        "body_excerpt": "{\"error\": \"Forbidden\"}",
+        "body_sha256": "ff57a7441cf05c0ae2a6a631bcc9f068a205a3fba4a5d451309099a208db2962"
+      }
+    },
+    {
+      "case_id": "TC-019",
+      "binding_id": "delete_account",
+      "authorization_level": "function",
+      "subject_id": "user_002",
+      "action": "delete",
+      "resource_type": "account",
+      "resource_id": "account_001",
+      "expected": "deny",
+      "observed": "deny",
+      "verdict": "PASS",
+      "category": null,
+      "severity": null,
+      "exposed_fields": [],
+      "remediation": [],
+      "policy_ids": [],
+      "rationale": "No policy grants this access (default deny).",
+      "observation_reason": "HTTP 403: access refused.",
+      "timestamp": "2026-10-06T16:23:52+00:00",
+      "request": {
+        "method": "DELETE",
+        "url": "http://127.0.0.1:8002/api/accounts/account_001",
+        "headers": {
+          "X-User-ID": "user_002"
+        },
+        "body": null
+      },
+      "response": {
+        "status": 403,
+        "elapsed_ms": 3.35,
+        "error": null,
+        "body_excerpt": "{\"error\": \"Forbidden\"}",
+        "body_sha256": "ff57a7441cf05c0ae2a6a631bcc9f068a205a3fba4a5d451309099a208db2962"
+      }
+    },
+    {
+      "case_id": "TC-020",
+      "binding_id": "delete_account",
+      "authorization_level": "function",
+      "subject_id": "user_002",
+      "action": "delete",
+      "resource_type": "account",
+      "resource_id": "account_002",
+      "expected": "deny",
+      "observed": "deny",
+      "verdict": "PASS",
+      "category": null,
+      "severity": null,
+      "exposed_fields": [],
+      "remediation": [],
+      "policy_ids": [],
+      "rationale": "No policy grants this access (default deny).",
+      "observation_reason": "HTTP 403: access refused.",
+      "timestamp": "2026-10-06T16:23:52+00:00",
+      "request": {
+        "method": "DELETE",
+        "url": "http://127.0.0.1:8002/api/accounts/account_002",
+        "headers": {
+          "X-User-ID": "user_002"
+        },
+        "body": null
+      },
+      "response": {
+        "status": 403,
+        "elapsed_ms": 2.45,
+        "error": null,
+        "body_excerpt": "{\"error\": \"Forbidden\"}",
+        "body_sha256": "ff57a7441cf05c0ae2a6a631bcc9f068a205a3fba4a5d451309099a208db2962"
+      }
+    },
+    {
+      "case_id": "TC-021",
+      "binding_id": "delete_account",
+      "authorization_level": "function",
+      "subject_id": "admin_001",
+      "action": "delete",
+      "resource_type": "account",
+      "resource_id": "account_001",
+      "expected": "allow",
+      "observed": "allow",
+      "verdict": "PASS",
+      "category": null,
+      "severity": null,
+      "exposed_fields": [],
+      "remediation": [],
+      "policy_ids": [
+        "admin-delete-account"
+      ],
+      "rationale": "Allowed by admin-delete-account.",
+      "observation_reason": "HTTP 200: request succeeded.",
+      "timestamp": "2026-10-06T16:23:52+00:00",
+      "request": {
+        "method": "DELETE",
+        "url": "http://127.0.0.1:8002/api/accounts/account_001",
+        "headers": {
+          "X-User-ID": "admin_001"
+        },
+        "body": null
+      },
+      "response": {
+        "status": 200,
+        "elapsed_ms": 2.41,
+        "error": null,
+        "body_excerpt": "{\"deleted\": \"account_001\"}",
+        "body_sha256": "422dadd428342afacf6b8f5bead08af3d37d8db5fa420f5407d99d8a6a35ab87"
+      }
+    },
+    {
+      "case_id": "TC-022",
+      "binding_id": "delete_account",
+      "authorization_level": "function",
+      "subject_id": "admin_001",
+      "action": "delete",
+      "resource_type": "account",
+      "resource_id": "account_002",
+      "expected": "allow",
+      "observed": "allow",
+      "verdict": "PASS",
+      "category": null,
+      "severity": null,
+      "exposed_fields": [],
+      "remediation": [],
+      "policy_ids": [
+        "admin-delete-account"
+      ],
+      "rationale": "Allowed by admin-delete-account.",
+      "observation_reason": "HTTP 200: request succeeded.",
+      "timestamp": "2026-10-06T16:23:52+00:00",
+      "request": {
+        "method": "DELETE",
+        "url": "http://127.0.0.1:8002/api/accounts/account_002",
+        "headers": {
+          "X-User-ID": "admin_001"
+        },
+        "body": null
+      },
+      "response": {
+        "status": 200,
+        "elapsed_ms": 2.25,
+        "error": null,
+        "body_excerpt": "{\"deleted\": \"account_002\"}",
+        "body_sha256": "aa14dd42e8e187c5594034c9a1dfe7fddde04e59340d068bc9675bfa27143087"
+      }
+    },
+    {
+      "case_id": "TC-023",
+      "binding_id": "delete_account",
+      "authorization_level": "function",
+      "subject_id": "anonymous",
+      "action": "delete",
+      "resource_type": "account",
+      "resource_id": "account_001",
+      "expected": "deny",
+      "observed": "deny",
+      "verdict": "PASS",
+      "category": null,
+      "severity": null,
+      "exposed_fields": [],
+      "remediation": [],
+      "policy_ids": [],
+      "rationale": "No policy grants this access (default deny).",
+      "observation_reason": "HTTP 401: access refused.",
+      "timestamp": "2026-10-06T16:23:52+00:00",
+      "request": {
+        "method": "DELETE",
+        "url": "http://127.0.0.1:8002/api/accounts/account_001",
+        "headers": {},
+        "body": null
+      },
+      "response": {
+        "status": 401,
+        "elapsed_ms": 2.85,
+        "error": null,
+        "body_excerpt": "{\"error\": \"Authentication required\"}",
+        "body_sha256": "398d93874c3cffdf2e3bbfe6c09c7eeb17d2538c8c308bec017121fe5d664cb3"
+      }
+    },
+    {
+      "case_id": "TC-024",
+      "binding_id": "delete_account",
+      "authorization_level": "function",
+      "subject_id": "anonymous",
+      "action": "delete",
+      "resource_type": "account",
+      "resource_id": "account_002",
+      "expected": "deny",
+      "observed": "deny",
+      "verdict": "PASS",
+      "category": null,
+      "severity": null,
+      "exposed_fields": [],
+      "remediation": [],
+      "policy_ids": [],
+      "rationale": "No policy grants this access (default deny).",
+      "observation_reason": "HTTP 401: access refused.",
+      "timestamp": "2026-10-06T16:23:52+00:00",
+      "request": {
+        "method": "DELETE",
+        "url": "http://127.0.0.1:8002/api/accounts/account_002",
+        "headers": {},
+        "body": null
+      },
+      "response": {
+        "status": 401,
+        "elapsed_ms": 2.74,
+        "error": null,
+        "body_excerpt": "{\"error\": \"Authentication required\"}",
+        "body_sha256": "398d93874c3cffdf2e3bbfe6c09c7eeb17d2538c8c308bec017121fe5d664cb3"
+      }
+    },
+    {
+      "case_id": "TC-025",
+      "binding_id": "list_users",
+      "authorization_level": "function",
+      "subject_id": "user_001",
+      "action": "list_users",
+      "resource_type": "user_directory",
+      "resource_id": "all",
+      "expected": "deny",
+      "observed": "deny",
+      "verdict": "PASS",
+      "category": null,
+      "severity": null,
+      "exposed_fields": [],
+      "remediation": [],
+      "policy_ids": [],
+      "rationale": "No policy grants this access (default deny).",
+      "observation_reason": "HTTP 403: access refused.",
+      "timestamp": "2026-10-06T16:23:52+00:00",
+      "request": {
+        "method": "GET",
+        "url": "http://127.0.0.1:8002/api/admin/users",
+        "headers": {
+          "X-User-ID": "user_001"
+        },
+        "body": null
+      },
+      "response": {
+        "status": 403,
+        "elapsed_ms": 2.48,
+        "error": null,
+        "body_excerpt": "{\"error\": \"Forbidden\"}",
+        "body_sha256": "ff57a7441cf05c0ae2a6a631bcc9f068a205a3fba4a5d451309099a208db2962"
+      }
+    },
+    {
+      "case_id": "TC-026",
+      "binding_id": "list_users",
+      "authorization_level": "function",
+      "subject_id": "user_002",
+      "action": "list_users",
+      "resource_type": "user_directory",
+      "resource_id": "all",
+      "expected": "deny",
+      "observed": "deny",
+      "verdict": "PASS",
+      "category": null,
+      "severity": null,
+      "exposed_fields": [],
+      "remediation": [],
+      "policy_ids": [],
+      "rationale": "No policy grants this access (default deny).",
+      "observation_reason": "HTTP 403: access refused.",
+      "timestamp": "2026-10-06T16:23:52+00:00",
+      "request": {
+        "method": "GET",
+        "url": "http://127.0.0.1:8002/api/admin/users",
+        "headers": {
+          "X-User-ID": "user_002"
+        },
+        "body": null
+      },
+      "response": {
+        "status": 403,
+        "elapsed_ms": 6.98,
+        "error": null,
+        "body_excerpt": "{\"error\": \"Forbidden\"}",
+        "body_sha256": "ff57a7441cf05c0ae2a6a631bcc9f068a205a3fba4a5d451309099a208db2962"
+      }
+    },
+    {
+      "case_id": "TC-027",
+      "binding_id": "list_users",
+      "authorization_level": "function",
+      "subject_id": "admin_001",
+      "action": "list_users",
+      "resource_type": "user_directory",
+      "resource_id": "all",
+      "expected": "allow",
+      "observed": "allow",
+      "verdict": "PASS",
+      "category": null,
+      "severity": null,
+      "exposed_fields": [],
+      "remediation": [],
+      "policy_ids": [
+        "admin-list-users"
+      ],
+      "rationale": "Allowed by admin-list-users.",
+      "observation_reason": "HTTP 200: request succeeded.",
+      "timestamp": "2026-10-06T16:23:52+00:00",
+      "request": {
+        "method": "GET",
+        "url": "http://127.0.0.1:8002/api/admin/users",
+        "headers": {
+          "X-User-ID": "admin_001"
+        },
+        "body": null
+      },
+      "response": {
+        "status": 200,
+        "elapsed_ms": 2.67,
+        "error": null,
+        "body_excerpt": "{\"users\": [{\"id\": \"user_001\", \"role\": \"user\"}, {\"id\": \"user_002\", \"role\": \"user\"}, {\"id\": \"admin_001\", \"role\": \"admin\"}]}",
+        "body_sha256": "5822ad0c9ba03a8caf4435eae81dd1324a8a641522e30973aebdf3c34c97dc40"
+      }
+    },
+    {
+      "case_id": "TC-028",
+      "binding_id": "list_users",
+      "authorization_level": "function",
+      "subject_id": "anonymous",
+      "action": "list_users",
+      "resource_type": "user_directory",
+      "resource_id": "all",
+      "expected": "deny",
+      "observed": "deny",
+      "verdict": "PASS",
+      "category": null,
+      "severity": null,
+      "exposed_fields": [],
+      "remediation": [],
+      "policy_ids": [],
+      "rationale": "No policy grants this access (default deny).",
+      "observation_reason": "HTTP 401: access refused.",
+      "timestamp": "2026-10-06T16:23:52+00:00",
+      "request": {
+        "method": "GET",
+        "url": "http://127.0.0.1:8002/api/admin/users",
+        "headers": {},
+        "body": null
+      },
+      "response": {
+        "status": 401,
+        "elapsed_ms": 2.44,
+        "error": null,
+        "body_excerpt": "{\"error\": \"Authentication required\"}",
+        "body_sha256": "398d93874c3cffdf2e3bbfe6c09c7eeb17d2538c8c308bec017121fe5d664cb3"
+      }
+    }
+  ]
+}

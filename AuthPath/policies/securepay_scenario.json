@@ -1,0 +1,71 @@
+{
+  "name": "SecurePay (vulnerable lab build)",
+  "base_url": "http://127.0.0.1:5000",
+  "auth": {
+    "type": "session_login",
+    "login_path": "/api/login",
+    "login_method": "POST",
+    "identity_field": "identity",
+    "password_field": "password"
+  },
+  "admin_roles": ["admin"],
+
+  "subjects": [
+    { "id": "alice", "type": "user", "roles": ["user"],
+      "attributes": { "username": "alice", "password": "Password123!" } },
+    { "id": "bob", "type": "user", "roles": ["user"],
+      "attributes": { "username": "bob", "password": "Password123!" } },
+    { "id": "admin", "type": "user", "roles": ["admin"],
+      "attributes": { "username": "admin", "password": "Password123!" } },
+    { "id": "anonymous", "type": "anonymous", "roles": [] }
+  ],
+
+  "resources": [
+    { "type": "transaction", "id": "1", "owner": "alice" },
+    { "type": "transaction", "id": "2", "owner": "alice" },
+    { "type": "user_directory", "id": "all" }
+  ],
+
+  "policies": [
+    {
+      "id": "read-own-transaction",
+      "description": "A user may read their own transaction.",
+      "subject": "user", "action": "read", "resource": "transaction",
+      "condition": { "equals": ["resource.owner", "subject.id"] },
+      "decision": "allow"
+    },
+    {
+      "id": "admin-read-any-transaction",
+      "description": "Admins may read any transaction.",
+      "subject": "user", "action": "read", "resource": "transaction",
+      "condition": { "contains": ["subject.roles", "admin"] },
+      "decision": "allow"
+    },
+    {
+      "id": "admin-list-users",
+      "description": "Only admins may list all users.",
+      "subject": "user", "action": "list_users", "resource": "user_directory",
+      "condition": { "contains": ["subject.roles", "admin"] },
+      "decision": "allow"
+    }
+  ],
+
+  "bindings": [
+    {
+      "id": "get_transaction", "action": "read", "resource": "transaction",
+      "method": "GET", "path": "/api/transactions/{transaction_id}",
+      "resource_id_parameter": "transaction_id",
+      "authorization_level": "object"
+    },
+    {
+      "id": "list_users", "action": "list_users", "resource": "user_directory",
+      "method": "GET", "path": "/api/admin/users",
+      "authorization_level": "function"
+    }
+  ],
+
+  "sensitive_fields": {},
+  "admin_only_fields": {
+    "user_directory": ["password_hash"]
+  }
+}

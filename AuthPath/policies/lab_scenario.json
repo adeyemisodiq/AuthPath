@@ -1,0 +1,171 @@
+{
+  "name": "AuthPath Lab API - banking scenario",
+  "base_url": "http://127.0.0.1:8000",
+  "identity_header": "X-User-ID",
+  "lab_reset_path": "/_lab/reset",
+  "subjects": [
+    {
+      "id": "user_001",
+      "type": "user",
+      "roles": [
+        "user"
+      ]
+    },
+    {
+      "id": "user_002",
+      "type": "user",
+      "roles": [
+        "user"
+      ]
+    },
+    {
+      "id": "admin_001",
+      "type": "user",
+      "roles": [
+        "admin"
+      ]
+    },
+    {
+      "id": "anonymous",
+      "type": "anonymous",
+      "roles": []
+    }
+  ],
+  "resources": [
+    {
+      "type": "account",
+      "id": "account_001",
+      "owner": "user_001"
+    },
+    {
+      "type": "account",
+      "id": "account_002",
+      "owner": "user_002"
+    },
+    {
+      "type": "user_directory",
+      "id": "all"
+    }
+  ],
+  "policies": [
+    {
+      "id": "read-own-account",
+      "description": "A user may read an account they own.",
+      "subject": "user",
+      "action": "read",
+      "resource": "account",
+      "condition": {
+        "equals": [
+          "resource.owner",
+          "subject.id"
+        ]
+      },
+      "decision": "allow"
+    },
+    {
+      "id": "update-own-account",
+      "description": "A user may update an account they own.",
+      "subject": "user",
+      "action": "update",
+      "resource": "account",
+      "condition": {
+        "equals": [
+          "resource.owner",
+          "subject.id"
+        ]
+      },
+      "decision": "allow"
+    },
+    {
+      "id": "admin-read-any-account",
+      "description": "Admins may read any account.",
+      "subject": "user",
+      "action": "read",
+      "resource": "account",
+      "condition": {
+        "contains": [
+          "subject.roles",
+          "admin"
+        ]
+      },
+      "decision": "allow"
+    },
+    {
+      "id": "admin-delete-account",
+      "description": "Only admins may delete accounts.",
+      "subject": "user",
+      "action": "delete",
+      "resource": "account",
+      "condition": {
+        "contains": [
+          "subject.roles",
+          "admin"
+        ]
+      },
+      "decision": "allow"
+    },
+    {
+      "id": "admin-list-users",
+      "description": "Only admins may list all users.",
+      "subject": "user",
+      "action": "list_users",
+      "resource": "user_directory",
+      "condition": {
+        "contains": [
+          "subject.roles",
+          "admin"
+        ]
+      },
+      "decision": "allow"
+    }
+  ],
+  "bindings": [
+    {
+      "id": "get_account",
+      "action": "read",
+      "resource": "account",
+      "method": "GET",
+      "path": "/api/accounts/{account_id}",
+      "resource_id_parameter": "account_id",
+      "authorization_level": "object"
+    },
+    {
+      "id": "update_account",
+      "action": "update",
+      "resource": "account",
+      "method": "PUT",
+      "path": "/api/accounts/{account_id}",
+      "resource_id_parameter": "account_id",
+      "body": {
+        "nickname": "authpath-probe"
+      },
+      "authorization_level": "object"
+    },
+    {
+      "id": "delete_account",
+      "action": "delete",
+      "resource": "account",
+      "method": "DELETE",
+      "path": "/api/accounts/{account_id}",
+      "resource_id_parameter": "account_id",
+      "authorization_level": "function"
+    },
+    {
+      "id": "list_users",
+      "action": "list_users",
+      "resource": "user_directory",
+      "method": "GET",
+      "path": "/api/admin/users",
+      "authorization_level": "function"
+    }
+  ],
+  "sensitive_fields": {},
+  "admin_roles": [
+    "admin"
+  ],
+  "admin_only_fields": {
+    "account": [
+      "internal_risk_score"
+    ]
+  }
+}

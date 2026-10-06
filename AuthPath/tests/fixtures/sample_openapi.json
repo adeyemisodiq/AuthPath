@@ -1,0 +1,16 @@
+{
+  "openapi": "3.0.0",
+  "paths": {
+    "/api/accounts/{account_id}": {
+      "get": { "summary": "Get an account" },
+      "put": { "summary": "Update an account" },
+      "delete": { "summary": "Delete an account" }
+    },
+    "/api/admin/users": {
+      "get": { "summary": "List all users" }
+    },
+    "/api/payments/{payment_id}": {
+      "get": { "operationId": "getPayment" }
+    }
+  }
+}
